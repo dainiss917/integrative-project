@@ -164,4 +164,18 @@ public:
     }
 };
 
+class Catalog {
+private:
+    string description;
+public:
+    explicit Catalog(const string& desc)
+        : description(desc) {}
+    void displayInfo() const {
+        cout << "  Description: " << description << "\n";
+    }
+    ~Catalog() noexcept {
+        cout << "catalog destroyed\n";
+    }
+};
+
 
