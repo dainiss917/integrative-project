@@ -97,4 +97,55 @@ public:
     }
 };
 
+class Book {
+private:
+    string title;
+    string author;
+    string genre;
+    string INB;
+    bool available;
+    Rating rating;
+public:
+    Book(const string& t,const string& a,const string& g,const string& i,int r = 3)
+        : title(t),author(a),genre(g),INB(i),available(true),rating(r) {}
+    string getTitle() const noexcept {
+        return title;
+    }
+    string getINB() const noexcept {
+        return INB;
+    }
+    bool isAvailable() const noexcept {
+        return available;
+    }
+    const Rating& getRating() const noexcept {
+        return rating;
+    }
+    void borrowBook() {
+        if (!available) {
+            throw LibraryException("this book is already borrowed.");
+        }
+        available = false;
+    }
+    void returnBook() noexcept {
+        available = true;
+    }
+    bool operator==(const Book& other) const noexcept {
+        return INB == other.INB;
+    }
+    bool operator<(const Book& other) const noexcept {
+        return rating < other.rating;
+    }
+    friend ostream& operator<<(ostream& os, const Book& b) {
+        os << "Title:  " << b.title  << "\n";
+        os << "Author: " << b.author << "\n";
+        os << "Genre:  " << b.genre  << "\n";
+        os << "ISBN:   " << b.INB  << "\n";
+        os << "Rating: " << b.rating << "\n";
+        os << "Status: "
+           << (b.available ? "Available" : "Borrowed")
+           << "\n";
+        return os;
+    }
+};
+
 
