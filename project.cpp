@@ -61,4 +61,40 @@ public:
     }
 };
 
+class Student : public Person {
+private:
+    string career;
+public:
+    Student(int i, const string& n, const string& c)
+        : Person(i, n), career(c) {
+        cout << "student created: " << name << "\n";
+    }
+    void displayInfo() const override {
+        cout << "  ID:     " << id << "\n";
+        cout << "  name:   " << name << "\n";
+        cout << "  career: " << career << "\n";
+    }
+    ~Student() noexcept override {
+        cout << "student destroyed: " << name << "\n";
+    }
+};
+
+class Professor : public Person {
+private:
+    string department;
+public:
+    Professor(int i, const string& n, const string& d)
+        : Person(i, n), department(d) {
+        cout << "professor created: " << name << "\n";
+    }
+    void displayInfo() const override {
+        cout << "  ID:         " << id << "\n";
+        cout << "  name:       " << name << "\n";
+        cout << "  department: " << department << "\n";
+    }
+    ~Professor() noexcept override {
+        cout << "professor destroyed: " << name << "\n";
+    }
+};
+
 
