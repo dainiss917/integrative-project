@@ -148,4 +148,20 @@ public:
     }
 };
 
+class Loan {
+private:
+    string personName;
+    string bookTitle;
+public:
+    Loan(const string& p, const string& b)
+        : personName(p),
+          bookTitle(b) {}
+    void displayLoan() const {
+        cout << "  " << personName
+             << " borrowed \""
+             << bookTitle
+             << "\"\n";
+    }
+};
+
 
