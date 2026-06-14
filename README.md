@@ -1,7 +1,10 @@
 # integrative-project
 this program simulates a library management system. It allows users to register students and teachers, add books, borrow and return them,and search or compare books by rating.
+
 to compile and run the program, use this: 
+
 the program will show a menu with 11 options. Use the number keys to navigate.
+
 An example of output is:
 
 LIBRARY OPTIONS
