@@ -13,13 +13,13 @@ LIBRARY OPTIONS
    
 ...
 
-student name: Ana Garcia
+student name: Jan Carlo
 
-career: Computer Science
+career:  Science
 
-Person created: Ana Garcia
+Person created: Jan Carlo
 
-student created: Ana Garcia
+student created: Jan Carlo
 
 book title: harry potter
 
