@@ -139,7 +139,7 @@ public:
         os << "Title:  " << b.title  << "\n";
         os << "Author: " << b.author << "\n";
         os << "Genre:  " << b.genre  << "\n";
-        os << "ISBN:   " << b.INB  << "\n";
+        os << "INB:   " << b.INB  << "\n";
         os << "Rating: " << b.rating << "\n";
         os << "Status: "
            << (b.available ? "Available" : "Borrowed")
@@ -269,13 +269,13 @@ public:
             if (books[i].getTitle() == titleB) b = &books[i];
         }
         if (a == nullptr || b == nullptr) {
-            throw LibraryException("One or both books not found.");
+            throw LibraryException("one or both books not found.");
         }
         cout << "\nBOOK COMPARISON\n";
         cout << "\"" << titleA << "\" rating: " << a->getRating() << "\n";
         cout << "\"" << titleB << "\" rating: " << b->getRating() << "\n";
         if (*a == *b) {
-            cout << "obth of them have the same ISBN.\n";
+            cout << "obth of them have the same INB.\n";
         } else if (*a < *b) {
             cout << "\"" << titleA << "\" is rated lower than \""
                  << titleB << "\".\n";
@@ -387,3 +387,36 @@ int main() {
                 library.compareBooks(titleA, titleB);
                 break;
             }
+            case 10:
+                library.showCatalogInfo();
+                break;
+            case 11: {
+                string title, author, genre, inb;
+                int rating;
+                cout << "Title: ";
+                getline(cin, title);
+                cout << "Author: ";
+                getline(cin, author);
+                cout << "Genre: ";
+                getline(cin, genre);
+                cout << "INB: ";
+                getline(cin, inb);
+                cout << "Rating (1-5): ";
+                cin >> rating;
+                cin.ignore();
+                library.addBook(Book(title, author, genre, inb, rating));
+                cout << "\nBook added successfully.\n";
+                break;
+            }
+            case 0:
+                cout << "\nexiting program\n";
+                break;
+            default:
+                cout << "invalid option.\n";
+            }
+        } catch (const exception& e) {
+            cout << "\nerror: " << e.what() << "\n";
+        }
+    } while (option != 0);
+    return 0;
+}
