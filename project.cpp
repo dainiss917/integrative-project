@@ -178,4 +178,111 @@ public:
     }
 };
 
+class Library {
+private:
+    vector<Book>                  books;
+    vector<Loan>                  loans;
+    vector<unique_ptr<Person>>    people;
+    const Catalog* catalog;
+public:
+    explicit Library(const Catalog* cat)
+        : catalog(cat) {}
+    void addBook(const Book& book) {
+        books.push_back(book);
+    }
+    void showBooks() const {
+        cout << "\nBOOKS\n";
+        for (size_t i = 0; i < books.size(); i++) {
+            cout << books[i] << "\n";
+        }
+    }
+    void searchBook(const string& title) const {
+        for (size_t i = 0; i < books.size(); i++) {
+            if (books[i].getTitle() == title) {
+                cout << "\nbook found:\n";
+                cout << books[i] << "\n";
+                return;
+            }
+        }
+        throw LibraryException("book not found: " + title);
+    }
+    void borrowBook(const string& title,
+                    const string& personName) {
+        for (size_t i = 0; i < books.size(); i++) {
+            if (books[i].getTitle() == title) {
+                books[i].borrowBook(); 
+                loans.push_back(Loan(personName, title));
+                cout << "\nsuccessfully loan.\n";
+                return;
+            }
+        }
+        throw LibraryException("book not found: " + title);
+    }
+    void returnBook(const string& title) {
+        for (size_t i = 0; i < books.size(); i++) {
+            if (books[i].getTitle() == title) {
+                books[i].returnBook();
+                cout << "\nsuccessfully return.\n";
+                return;
+            }
+        }
+        throw LibraryException("book not found: " + title);
+    }
+    void addPerson(unique_ptr<Person> person) {
+        people.push_back(move(person));
+    }
+    void showPeople() const {
+        cout << "\nPEOPLE\n";
+        if (people.empty()) {
+            cout << "no registered people.\n";
+            return;
+        }
+        for (size_t i = 0; i < people.size(); i++) {
+            people[i]->displayInfo();
+            cout << "\n";
+        }
+    }
+    void showLoans() const {
+        cout << "\nLOANS\n";
+        if (loans.empty()) {
+            cout << "no active loans.\n";
+            return;
+        }
+        for (size_t i = 0; i < loans.size(); i++) {
+            loans[i].displayLoan();
+        }
+    }
+    void showCatalogInfo() const {
+        if (catalog == nullptr) {
+            cout << "no catalog linked.\n";
+            return;
+        }
+        cout << "\nCATALOG\n";
+        catalog->displayInfo();
+    }
+    void compareBooks(const string& titleA,
+                      const string& titleB) const {
+        const Book* a = nullptr;
+        const Book* b = nullptr;
+        for (size_t i = 0; i < books.size(); i++) {
+            if (books[i].getTitle() == titleA) a = &books[i];
+            if (books[i].getTitle() == titleB) b = &books[i];
+        }
+        if (a == nullptr || b == nullptr) {
+            throw LibraryException("One or both books not found.");
+        }
+        cout << "\nBOOK COMPARISON\n";
+        cout << "\"" << titleA << "\" rating: " << a->getRating() << "\n";
+        cout << "\"" << titleB << "\" rating: " << b->getRating() << "\n";
+        if (*a == *b) {
+            cout << "obth of them have the same ISBN.\n";
+        } else if (*a < *b) {
+            cout << "\"" << titleA << "\" is rated lower than \""
+                 << titleB << "\".\n";
+        } else {
+            cout << "\"" << titleA << "\" is rated higher than \""
+                 << titleB << "\".\n";
+        }
+    }
+};
 
