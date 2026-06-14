@@ -3,6 +3,7 @@ this program simulates a library management system. It allows users to register 
 to compile and run the program, use this: 
 the program will show a menu with 11 options. Use the number keys to navigate.
 An example of output is:
+
 LIBRARY OPTIONS
 1.  show Books
 2.  register Student
