@@ -4,7 +4,15 @@
 #include <memory>
 #include <exception>
 using namespace std;
-
+ 
+string toLower(const string& s) {
+    string result = s;
+    for (size_t i = 0; i < result.size(); i++) {
+        result[i] = tolower(result[i]);
+    }
+    return result;
+}
+ 
 class LibraryException : public exception {
 private:
     string message;
@@ -15,7 +23,7 @@ public:
         return message.c_str();
     }
 };
-
+ 
 class Rating {
 private:
     int value; // 1 to 5
@@ -39,7 +47,7 @@ public:
         return os;
     }
 };
-
+ 
 class Person {
 protected:
     int id;
@@ -56,11 +64,9 @@ public:
     int getId() const noexcept {
         return id;
     }
-    virtual ~Person() noexcept {
-        cout << "person destroyed: " << name << "\n";
-    }
+    virtual ~Person() noexcept {}
 };
-
+ 
 class Student : public Person {
 private:
     string career;
@@ -74,11 +80,9 @@ public:
         cout << "  name:   " << name << "\n";
         cout << "  career: " << career << "\n";
     }
-    ~Student() noexcept override {
-        cout << "student destroyed: " << name << "\n";
-    }
+    ~Student() noexcept override {}
 };
-
+ 
 class Professor : public Person {
 private:
     string department;
@@ -92,11 +96,9 @@ public:
         cout << "  name:       " << name << "\n";
         cout << "  department: " << department << "\n";
     }
-    ~Professor() noexcept override {
-        cout << "professor destroyed: " << name << "\n";
-    }
+    ~Professor() noexcept override {}
 };
-
+ 
 class Book {
 private:
     string title;
@@ -147,7 +149,7 @@ public:
         return os;
     }
 };
-
+ 
 class Loan {
 private:
     string personName;
@@ -162,8 +164,11 @@ public:
              << bookTitle
              << "\"\n";
     }
+    string getBookTitle() const noexcept {
+        return bookTitle;
+    }
 };
-
+ 
 class Catalog {
 private:
     string description;
@@ -173,11 +178,9 @@ public:
     void displayInfo() const {
         cout << "  Description: " << description << "\n";
     }
-    ~Catalog() noexcept {
-        cout << "catalog destroyed\n";
-    }
+    ~Catalog() noexcept {}
 };
-
+ 
 class Library {
 private:
     vector<Book>                  books;
@@ -198,7 +201,7 @@ public:
     }
     void searchBook(const string& title) const {
         for (size_t i = 0; i < books.size(); i++) {
-            if (books[i].getTitle() == title) {
+            if (toLower(books[i].getTitle()) == toLower(title)) {
                 cout << "\nbook found:\n";
                 cout << books[i] << "\n";
                 return;
@@ -208,9 +211,19 @@ public:
     }
     void borrowBook(const string& title,
                     const string& personName) {
+        bool personFound = false;
+        for (size_t i = 0; i < people.size(); i++) {
+            if (toLower(people[i]->getName()) == toLower(personName)) {
+                personFound = true;
+                break;
+            }
+        }
+        if (!personFound) {
+            throw LibraryException("person not registered: " + personName);
+        }
         for (size_t i = 0; i < books.size(); i++) {
-            if (books[i].getTitle() == title) {
-                books[i].borrowBook(); 
+            if (toLower(books[i].getTitle()) == toLower(title)) {
+                books[i].borrowBook();
                 loans.push_back(Loan(personName, title));
                 cout << "\nsuccessfully loan.\n";
                 return;
@@ -220,8 +233,17 @@ public:
     }
     void returnBook(const string& title) {
         for (size_t i = 0; i < books.size(); i++) {
-            if (books[i].getTitle() == title) {
+            if (toLower(books[i].getTitle()) == toLower(title)) {
+                if (books[i].isAvailable()) {
+                    throw LibraryException("this book is not borrowed.");
+                }
                 books[i].returnBook();
+                for (size_t j = 0; j < loans.size(); j++) {
+                    if (toLower(loans[j].getBookTitle()) == toLower(title)) {
+                        loans.erase(loans.begin() + j);
+                        break;
+                    }
+                }
                 cout << "\nsuccessfully return.\n";
                 return;
             }
@@ -265,8 +287,8 @@ public:
         const Book* a = nullptr;
         const Book* b = nullptr;
         for (size_t i = 0; i < books.size(); i++) {
-            if (books[i].getTitle() == titleA) a = &books[i];
-            if (books[i].getTitle() == titleB) b = &books[i];
+            if (toLower(books[i].getTitle()) == toLower(titleA)) a = &books[i];
+            if (toLower(books[i].getTitle()) == toLower(titleB)) b = &books[i];
         }
         if (a == nullptr || b == nullptr) {
             throw LibraryException("one or both books not found.");
@@ -274,8 +296,8 @@ public:
         cout << "\nBOOK COMPARISON\n";
         cout << "\"" << titleA << "\" rating: " << a->getRating() << "\n";
         cout << "\"" << titleB << "\" rating: " << b->getRating() << "\n";
-        if (*a == *b) {
-            cout << "obth of them have the same INB.\n";
+        if (a->getRating() == b->getRating()) {
+            cout << "both books have the same rating.\n";
         } else if (*a < *b) {
             cout << "\"" << titleA << "\" is rated lower than \""
                  << titleB << "\".\n";
@@ -285,7 +307,7 @@ public:
         }
     }
 };
-
+ 
 int main() {
     Catalog catalog("General collection - fiction, science, programming");
     Library library(&catalog);
@@ -409,7 +431,6 @@ int main() {
                 break;
             }
             case 0:
-                cout << "\nleaving program\n";
                 break;
             default:
                 cout << "invalid option.\n";
