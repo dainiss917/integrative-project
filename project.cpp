@@ -286,3 +286,104 @@ public:
     }
 };
 
+int main() {
+    Catalog catalog("General collection - fiction, science, programming");
+    Library library(&catalog);
+    library.addBook(Book("Harry Potter", "J.K. Rowling", "Fantasy", "001", 5));
+    library.addBook(Book("Dune", "Frank Herbert", "Science Fiction", "002", 5));
+    library.addBook(Book("Algebra de Baldor", "Aurelio Baldor", "Mathematics", "003", 4));
+    library.addBook(Book("Introduction to Psychology", "Sigmund Freud", "Psychology", "004", 4));
+    library.addBook(Book("Clinical Medicine", "Parveen Kumar", "Medicine", "005", 4));
+    library.addBook(Book("Computer Programming", "Donald Knuth", "Programming", "006", 5));
+    library.addBook(Book("Cien Años de Soledad", "Gabriel Garcia Marquez", "Fiction", "007", 5));
+    library.addBook(Book("The Diary of a Young Girl", "Anne Frank", "Biography", "008", 5));
+    int option;
+    int nextId = 1;
+    do {
+        cout << "\nLIBRARY OPTIONS\n";
+        cout << "1.  show Books\n";
+        cout << "2.  register Student\n";
+        cout << "3.  register Professor\n";
+        cout << "4.  show People\n";
+        cout << "5.  borrow Book\n";
+        cout << "6.  return Book\n";
+        cout << "7.  show Loans\n";
+        cout << "8.  search Book\n";
+        cout << "9.  compare Book Ratings\n";
+        cout << "10. show Catalog Info\n";
+        cout << "11. add Boook\n";
+        cout << "0.  exit\n";
+        cout << "option: ";
+        cin >> option;
+        cin.ignore();
+        try {
+            switch (option) {
+            case 1:
+                library.showBooks();
+                break;
+            case 2: {
+                string name, career;
+                cout << "student name: ";
+                getline(cin, name);
+                cout << "career: ";
+                getline(cin, career);
+                library.addPerson(
+                    unique_ptr<Person>(
+                        new Student(nextId, name, career)
+                    )
+                );
+                nextId++;
+                break;
+            }
+            case 3: {
+                string name, department;
+                cout << "professor name: ";
+                getline(cin, name);
+                cout << "department: ";
+                getline(cin, department);
+                library.addPerson(
+                    unique_ptr<Person>(
+                        new Professor(nextId, name, department)
+                    )
+                );
+                nextId++;
+                break;
+            }
+            case 4:
+                library.showPeople();
+                break;
+            case 5: {
+                string personName, bookTitle;
+                cout << "person name: ";
+                getline(cin, personName);
+                cout << "book title: ";
+                getline(cin, bookTitle);
+                library.borrowBook(bookTitle, personName);
+                break;
+            }
+            case 6: {
+                string bookTitle;
+                cout << "book title to return: ";
+                getline(cin, bookTitle);
+                library.returnBook(bookTitle);
+                break;
+            }
+            case 7:
+                library.showLoans();
+                break;
+            case 8: {
+                string title;
+                cout << "book title: ";
+                getline(cin, title);
+                library.searchBook(title);
+                break;
+            }
+            case 9: {
+                string titleA, titleB;
+                cout << "first book title: ";
+                getline(cin, titleA);
+                cout << "second book title: ";
+                getline(cin, titleB);
+                library.compareBooks(titleA, titleB);
+                break;
+            }
