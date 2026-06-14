@@ -7,16 +7,23 @@ An example of output is:
 LIBRARY OPTIONS
 1.  show Books
 2.  register Student
+   
 ...
+
 student name: Ana Garcia
+
 career: Computer Science
+
 Person created: Ana Garcia
+
 student created: Ana Garcia
 
 book title: harry potter
+
 successfully loan.
 
 error: person not registered: Juan
+
 error: this book is not borrowed.
 
 The program demonstrates all the necessary concepts of OOP. Composition is shown in the Library class, which contains its books, loans, and users. Aggregation is represented by the Catalog, which exists independently and is referenced by Library through a pointer without property. Dependency is manifested in methods such as `borrowBook()` and `searchBook()`, which use temporary parameters. Encapsulation is ensured through class methods that maintain valid state, such as preventing loans or ratings of invalid books. Inheritance is demonstrated with the Student and Professor classes, which derive from the abstract Person class, while runtime polymorphism is achieved through a `unique_ptr<Person>` array and virtual calls to `displayInfo()`. Operator overloading is implemented in Book and Rating, and a virtual destructor in Person ensures the proper cleanup of derived objects.
