@@ -405,11 +405,11 @@ int main() {
                 cin >> rating;
                 cin.ignore();
                 library.addBook(Book(title, author, genre, inb, rating));
-                cout << "\nBook added successfully.\n";
+                cout << "\nbook added successfully.\n";
                 break;
             }
             case 0:
-                cout << "\nexiting program\n";
+                cout << "\nleaving program\n";
                 break;
             default:
                 cout << "invalid option.\n";
