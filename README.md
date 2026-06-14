@@ -10,6 +10,7 @@ An example of output is:
 LIBRARY OPTIONS
 1.  show Books
 2.  register Student
+3.  register Professor
    
 ...
 
